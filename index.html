@@ -1,15 +1,263 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compare recorded GNOSIS and Gemini responses to the same scientific research questions on the biology of aging.">
+  <meta name="theme-color" content="#102033">
   <title>GNOSIS | AI Comparison</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script>
+    try {
+      var savedTheme = localStorage.getItem("gnosis-theme");
+      if (savedTheme !== "light" && savedTheme !== "dark") {
+        savedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    } catch (error) {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  </script>
 </head>
 <body>
-  <h1>GNOSIS vs. Gemini</h1>
-  <p>Interactive Scientific Research Comparison</p>
-  <p>Website coming soon.</p>
+  <a class="skip-link" href="#explorer">Skip to comparisons</a>
+
+  <header class="site-header">
+    <div class="wrap header-bar">
+      <a class="brand" href="#top">
+        <span class="brand-title">GNOSIS <span aria-hidden="true">|</span> AI Comparison</span>
+        <span class="tagline">Exploring scientific research questions through specialized and general-purpose AI.</span>
+      </a>
+      <div class="header-tools">
+        <button type="button" class="tool-button" id="theme-toggle" aria-pressed="false">
+          <span aria-hidden="true" class="theme-mark">◐</span>
+          <span id="theme-label">Dark mode</span>
+        </button>
+        <button type="button" class="tool-button nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+          Menu
+        </button>
+      </div>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href="#explorer">Explore Comparisons</a>
+        <a href="#knowledge">Demo Knowledge Base</a>
+        <a href="#about">About GNOSIS</a>
+        <a href="#methodology">Methodology</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <p class="eyebrow">Recorded demonstration · Biology of aging</p>
+        <h1 id="hero-title">One Question. Two AI Approaches.</h1>
+        <p class="lede">Explore how GNOSIS and a general-purpose AI model respond to the same scientific research questions, using a curated collection of use cases spanning the biology of aging.</p>
+        <div class="hero-actions">
+          <a class="button" href="#explorer">Explore the Comparisons</a>
+          <p class="stat"><strong id="case-count">12</strong> <span>Research Use Cases</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section explorer" id="explorer" aria-labelledby="explore-heading">
+      <div class="wrap wrap-wide">
+        <h2 id="explore-heading">Explore comparisons</h2>
+        <p class="section-intro">Choose a research question, then read the recorded GNOSIS demonstration response beside the recorded Gemini response. These are historical outputs, not a live chat.</p>
+
+        <div class="explorer-layout">
+          <aside class="case-nav" aria-label="Use cases">
+            <div class="search-block">
+              <label for="case-search">Search use cases</label>
+              <div class="search-row">
+                <input id="case-search" type="search" placeholder="Title or question" autocomplete="off" enterkeyhint="search">
+                <button type="button" class="clear-search" id="clear-search" hidden>Clear</button>
+              </div>
+              <p id="search-status" class="search-status" aria-live="polite"></p>
+            </div>
+
+            <div class="case-select-wrap">
+              <label for="case-select">Choose a use case</label>
+              <select id="case-select"></select>
+            </div>
+
+            <ul class="case-list" id="case-list"></ul>
+            <div class="empty-search" id="empty-search" hidden>
+              <p>No use cases match that search.</p>
+              <button type="button" class="button button-secondary" id="empty-clear">Clear search</button>
+            </div>
+          </aside>
+
+          <div class="case-detail">
+            <p id="case-live" class="visually-hidden" aria-live="polite"></p>
+            <article class="question-card" id="question-card" aria-labelledby="case-title">
+              <p class="eyebrow">Use case <span id="case-number">1</span> of <span id="case-total">12</span></p>
+              <h3 id="case-title">Loading use cases…</h3>
+              <p class="question-text" id="case-question"></p>
+              <div class="action-row">
+                <button type="button" class="button button-secondary" id="copy-question">Copy question</button>
+                <button type="button" class="button button-secondary" id="share-case">Copy link</button>
+              </div>
+            </article>
+
+            <div class="pager" aria-label="Use case pages">
+              <button type="button" id="prev-case">Previous</button>
+              <button type="button" id="next-case">Next</button>
+            </div>
+
+            <div class="model-tabs" role="tablist" aria-label="Response view">
+              <button type="button" role="tab" id="tab-gnosis" aria-controls="panel-gnosis" aria-selected="true">GNOSIS</button>
+              <button type="button" role="tab" id="tab-gemini" aria-controls="panel-gemini" aria-selected="false" tabindex="-1">Gemini</button>
+              <button type="button" role="tab" id="tab-both" aria-controls="panel-gnosis" aria-selected="false" tabindex="-1" aria-label="Compare both responses">Both</button>
+            </div>
+
+            <div class="panels">
+              <section class="panel panel-gnosis" id="panel-gnosis" role="tabpanel" aria-labelledby="tab-gnosis" tabindex="0">
+                <header class="panel-toolbar">
+                  <div>
+                    <h4 id="gnosis-heading">GNOSIS</h4>
+                    <p class="model-role" id="gnosis-role">Scientific demonstration system</p>
+                    <p class="model-label" id="gnosis-label">GNOSIS Demo Response</p>
+                  </div>
+                  <button type="button" class="button button-secondary" id="copy-gnosis">Copy response</button>
+                </header>
+                <p class="recorded-note">Recorded demonstration output. Not a live response.</p>
+                <details class="outline" id="gnosis-outline" hidden></details>
+                <div class="response" id="gnosis-body"></div>
+              </section>
+
+              <section class="panel panel-gemini" id="panel-gemini" role="tabpanel" aria-labelledby="tab-gemini" tabindex="0" hidden>
+                <header class="panel-toolbar">
+                  <div>
+                    <h4 id="gemini-heading">Gemini</h4>
+                    <p class="model-role" id="gemini-role">General-purpose model</p>
+                    <p class="model-label" id="gemini-label">Gemini (3.6 Flash) Response</p>
+                  </div>
+                  <button type="button" class="button button-secondary" id="copy-gemini">Copy response</button>
+                </header>
+                <p class="recorded-note">Recorded demonstration output. Not a live response.</p>
+                <details class="outline" id="gemini-outline" hidden></details>
+                <div class="response" id="gemini-body"></div>
+              </section>
+            </div>
+
+            <div class="pager pager-bottom" aria-label="Use case pages">
+              <button type="button" id="prev-case-bottom">Previous</button>
+              <button type="button" id="next-case-bottom">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="knowledge" aria-labelledby="knowledge-heading">
+      <div class="wrap">
+        <h2 id="knowledge-heading">Inside the GNOSIS Demo Knowledge Base</h2>
+        <p class="section-intro">The GNOSIS demonstration was populated with a focused collection of scientific literature from the Schilling Lab at the Buck Institute for Research on Aging. This included a research paper examining age-related changes in protein aggregation, its complete bibliography, and several additional recent publications from the laboratory.</p>
+
+        <article class="paper-card">
+          <p class="eyebrow">Primary scientific source</p>
+          <h3>Shifts in protein aggregate stability define proteostasis decline in the aging human brain</h3>
+          <p class="paper-meta">Anderton, E., Burton, J. B., King, C. D., et al. (2026). bioRxiv.</p>
+          <p>This study served as a central scientific source for the GNOSIS demonstration, providing research context on protein aggregate stability and proteostasis during human brain aging.</p>
+          <p class="paper-doi">DOI: 10.64898/2026.03.27.714902</p>
+          <a class="button" href="https://doi.org/10.64898/2026.03.27.714902" target="_blank" rel="noopener noreferrer">View Publication</a>
+        </article>
+
+        <h3 class="kb-subhead">How these sources were used</h3>
+        <div class="kb-flow" role="group" aria-label="Three literature collections populated one GNOSIS demo knowledge base">
+          <ul class="kb-sources">
+            <li>Primary research paper</li>
+            <li>Complete bibliography</li>
+            <li>Additional Schilling Lab papers</li>
+          </ul>
+          <p class="kb-join" aria-hidden="true">contributed to</p>
+          <p class="kb-base">GNOSIS Demo Knowledge Base</p>
+        </div>
+        <p>These collections populated the same demo knowledge base. They are not three separate GNOSIS systems.</p>
+
+        <div class="source-grid">
+          <article class="source-card">
+            <h3>Complete Paper Bibliography</h3>
+            <p>The references cited by the primary paper were also included in the demonstration's scientific knowledge collection, extending the available literature beyond the central study.</p>
+          </article>
+          <article class="source-card">
+            <h3>Additional Schilling Lab Publications</h3>
+            <p>The demonstration knowledge base also included several recent papers from the Schilling Lab, providing additional research context.</p>
+          </article>
+        </div>
+
+        <h3 class="kb-subhead">Why This Matters for the Comparison</h3>
+        <p class="callout">The GNOSIS demonstration was configured around a defined collection of scientific literature, while Gemini represents a general-purpose AI system. The responses shown here reflect their respective demonstration conditions, including differences in accessible information and system configuration. This comparison illustrates how their answers differ, but does not independently establish which system is more scientifically accurate.</p>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-heading">
+      <div class="wrap">
+        <div class="prose">
+          <h2 id="about-heading">About GNOSIS</h2>
+          <p>GNOSIS is an initiative at the Buck Institute for Research on Aging to develop shared scientific knowledge infrastructure that connects research literature, experimental data, laboratory records, and scientific knowledge. The goal is to make research information easier to discover, organize, trace, and use across laboratories.</p>
+          <p>GNOSIS aims to support evidence-grounded scientific exploration, knowledge organization, connections across research sources, and scientific collaboration. These are goals of the initiative. The comparisons on this website are recorded demonstration outputs. They are not a complete implementation of every intended capability, and they are not a guarantee of scientific correctness.</p>
+          <p>GNOSIS is being developed as shared research infrastructure, rather than an independent system for each laboratory. The demonstration does not claim to eliminate incorrect or unsupported model output.</p>
+        </div>
+
+        <article class="video-card" aria-labelledby="video-heading">
+          <h3 id="video-heading">Introducing GNOSIS</h3>
+          <p>Discover the vision behind GNOSIS and how connected scientific knowledge can help researchers explore evidence, uncover relationships, and accelerate discovery.</p>
+          <div class="video-frame">
+            <button type="button" class="video-poster" id="play-video">
+              <img src="https://i.ytimg.com/vi/sHaHzk2zHg4/hqdefault.jpg" alt="" width="480" height="360" loading="lazy">
+              <span class="play-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Play the GNOSIS introductory video</span>
+            </button>
+          </div>
+          <p class="video-note">Playing the video loads content from YouTube. It does not start until you press play.</p>
+          <p>
+            <a class="button button-secondary" id="video-link" href="https://www.youtube.com/watch?v=sHaHzk2zHg4&amp;t=1s" target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="methodology" aria-labelledby="method-heading">
+      <div class="wrap prose">
+        <h2 id="method-heading">Methodology and important context</h2>
+        <p>All 12 questions and both sets of answers are recorded demonstration outputs. Nothing on the page is generated live. Selecting a use case only displays text that was prepared in advance.</p>
+        <p>GNOSIS used the scientific literature described in <a href="#knowledge">Inside the GNOSIS Demo Knowledge Base</a>. Those papers populated the demonstration’s available scientific sources. The workbook calls this collection a training database. That wording identifies the literature used for the demonstration. It does not mean a foundation model was trained on the publications.</p>
+        <h3>How to read the comparison</h3>
+        <p>Each use case shows one question and two recorded answers. On a wide screen, GNOSIS is on the left and Gemini is on the right. On a phone, use the GNOSIS, Gemini, and Both controls to move between the full responses without leaving the question.</p>
+        <p>The Gemini column keeps the workbook’s original model label: <strong id="gemini-method-label">Gemini (3.6 Flash) Response</strong>. This site does not substitute a different Gemini version.</p>
+        <p>Citations inside either response are reproduced from the recorded output. Scientific accuracy and citation validity have not been independently established through this website.</p>
+        <p class="callout">These examples illustrate differences in generated responses under the demonstration conditions. They do not constitute a controlled benchmark or independent verification of scientific accuracy.</p>
+      </div>
+    </section>
+
+    <section class="section" id="collaborate" aria-labelledby="collab-heading">
+      <div class="wrap prose">
+        <h2 id="collab-heading">Help Shape GNOSIS</h2>
+        <p>GNOSIS is being developed with input from researchers across scientific disciplines. We welcome conversations with laboratories interested in exploring how their research data, workflows, and scientific knowledge could contribute to and benefit from this shared infrastructure.</p>
+        <p id="collab-action"><strong>Interested in Collaborating?</strong></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-bar">
+      <p>GNOSIS | AI Comparison. Recorded demonstration responses for exploration, not a live model and not a benchmark.</p>
+      <nav aria-label="Footer">
+        <a href="#explorer">Comparisons</a>
+        <a href="#knowledge">Knowledge base</a>
+        <a href="#about">About</a>
+        <a href="#methodology">Methodology</a>
+        <a href="#collaborate">Collaborate</a>
+      </nav>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <noscript>
+    <p class="noscript">JavaScript is required to browse the 12 recorded comparisons. The response text is stored in use-cases.json.</p>
+  </noscript>
+  <script src="./app.js"></script>
 </body>
 </html>
